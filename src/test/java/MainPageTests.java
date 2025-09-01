@@ -18,18 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MainPageTests {
     private WebDriver driver;
-
+    private MainPage mainPage;
     @BeforeEach
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        mainPage = new MainPage(driver);
+        driver.get(mainPage.URL);
     }
 
     @ParameterizedTest
     @MethodSource("credentialsProvider")
     void accordanceQuestionsAnswers(int item, String answerText) {
-        MainPage mainPage = new MainPage(driver);
 
         //получили элемент-вопрос
         WebElement question = mainPage.getQuestion(item);
@@ -41,7 +41,7 @@ public class MainPageTests {
         WebElement answer = mainPage.getAnswer(item);
         //подождали открытие элемента-ответа
         new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.attributeToBe(question, "aria-expanded", "true"));
+                .until(mainPage.isAnswerOpened(question));
         //получили текст ответа
         String actualResult = mainPage.getAnswersText(answer);
         assertEquals(answerText, actualResult);

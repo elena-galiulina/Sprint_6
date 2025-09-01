@@ -14,8 +14,9 @@ public class OrderPage {
     //поле адрес
     private By inputAdress = By.cssSelector("input[placeholder='* Адрес: куда привезти заказ']");
     //поле станция метро
-    private By divMetroStation = By.xpath(".//div[@class='select-search__value']");
     private By inputMetroStation = By.xpath(".//input[@class='select-search__input' and  @placeholder='* Станция метро']");
+    //элемент выпадающего списка метро
+    private By selectMetroStation = By.xpath(".//div[@class='select-search__select']");
     //телефон
     private By inputPhoneNumber = By.cssSelector("input[placeholder='* Телефон: на него позвонит курьер']");
     //кнопка далее
@@ -39,7 +40,9 @@ public class OrderPage {
     //кнопка подтверждения заказа "Да"
     private By buttonNextAcceptYes = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Да']");
     //окно успешного заказа
-    private By orderWindowSucces = By.className("Order_ModalHeader__3FDaJ");
+    //private By orderWindowSucces = By.className("Order_Modal__YZ-d3");
+    //заголовк окна успешного заказа
+    private By headerOrderWindowSucces = By.className("Order_ModalHeader__3FDaJ");
 
     public OrderPage(WebDriver webDriver) {
         this.driver = webDriver;
@@ -100,8 +103,8 @@ public class OrderPage {
         return buttonNextAcceptYes;
     }
 
-    public By getOrderWindowSucces() {
-        return orderWindowSucces;
+    public By getHeaderOrderWindowSucces() {
+        return headerOrderWindowSucces;
     }
 
     public By getOrderWindowSecond() {
@@ -110,5 +113,9 @@ public class OrderPage {
 
     public By getButtonNextAcceptOrder() {
         return buttonNextAcceptOrder;
+    }
+
+    public By getSelectMetroStation() {
+        return selectMetroStation;
     }
 }

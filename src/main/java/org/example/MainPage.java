@@ -3,10 +3,14 @@ package org.example;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
 public class MainPage {
+    public final String URL = "https://qa-scooter.praktikum-services.ru/";
+
     private WebDriver driver;
 
     //вопрос
@@ -19,8 +23,11 @@ public class MainPage {
     private By bottomButtonOrder = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']");
 
     public MainPage(WebDriver webDriver) {
+
         this.driver = webDriver;
     }
+
+
     public WebElement getQuestion(int item) {
         List<WebElement> questions = driver.findElements(importantQuestions);
         return questions.get(item);
@@ -49,6 +56,10 @@ public class MainPage {
         } else  {
             return bottomButtonOrder;
         }
-
     }
+
+    public ExpectedCondition<Boolean> isAnswerOpened(WebElement question) {
+        return ExpectedConditions.attributeToBe(question, "aria-expanded", "true");
+    }
+
 }

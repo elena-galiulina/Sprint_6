@@ -29,6 +29,11 @@ public class Steps {
         return !webDriver.findElements(element).isEmpty();
     }
 
+    public String getText(By element) {
+
+        return webDriver.findElement(element).getText();
+    }
+
     public Steps closeCookieConsent() {
         // Найдите и кликните на кнопку принятия cookie
         By cookieConsentButton = By.xpath("//button[contains(text(), 'да все привыкли') or contains(text(), 'Принять')]");

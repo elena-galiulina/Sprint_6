@@ -10,12 +10,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class OrderPageTests {
@@ -28,9 +29,11 @@ public class OrderPageTests {
     @BeforeEach
     public void setUp() {
         driver = new ChromeDriver();
-        //driver = new FirefoxDriver();
+       // driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        driver.get("https://qa-scooter.praktikum-services.ru/");
+        mainPage = new MainPage(driver);
+        driver.get(mainPage.URL);
+
         step = new Steps(driver);
         step.closeCookieConsent();
         orderPage = new OrderPage(driver);
@@ -71,13 +74,14 @@ public class OrderPageTests {
         step.input(orderPage.getInputLastName(), lastName);
         step.input(orderPage.getInputAdress(), adress);
         step.click(orderPage.getInputMetroStation());
-        By select = By.xpath(".//div[@class='select-search__select']");
-        step.click(select);
+
+        step.click(orderPage.getSelectMetroStation());
         step.input(orderPage.getInputPhoneNumber(), phone);
         step.click(orderPage.getButtonNext());
         assertTrue(step.isShown(orderPage.getOrderWindowSecond()),
                 "Окно заказа 2 должно отображаться после клика на кнопку");
         step.input(orderPage.getInputDateOfOrder(), date);
+        step.click(orderPage.getOrderWindowSecond());
         step.click(orderPage.getRentDuration());
         step.click(orderPage.getRentDurationOneDay());
         step.click(orderPage.getBlackColorScooter());
@@ -86,8 +90,8 @@ public class OrderPageTests {
         assertTrue(step.isShown(orderPage.getOrderWindowAccept()),
                 "Окно подтверждения заказа должно отображаться после клика на кнопку");
         step.click(orderPage.getButtonNextAcceptYes());
-        assertTrue(step.isShown(orderPage.getOrderWindowSucces()),
-                "Окно успешного заказа должно отображаться после клика на кнопку");
+        assertTrue(step.getText(orderPage.getHeaderOrderWindowSucces()).contains("Заказ оформлен"), "Сообщение 'Заказ оформлен' не получено");
+
 
     }
 
